@@ -1,0 +1,26 @@
+<!doctype HTML>
+<html>
+  <head>
+    <title>Urban Busing</title>
+  </head>
+
+  <!-- @if NODE_ENV == 'DEVELOPMENT' -->
+  <link rel="stylesheet" src="build/busing.css">
+  <script src="js/lib/jquery/jquery-2.0.3.min.js"></script>
+  <script src="js/lib/d3.v3.min.js"></script>
+  <script src="js/lib/crossfilter.min.js"></script>
+  <script src="js/busvis.js"></script>
+
+  <!-- @endif -->
+
+  <!-- @if NODE_ENV == 'PRODUCTION' -->
+  <link rel="stylesheet" src="busing.css">
+  <script src="busing.min.js"></script>
+  <!-- @endif -->
+
+  <body>
+
+    <div id="vis"></div>
+
+  </body>
+</html>

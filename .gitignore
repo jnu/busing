@@ -4,4 +4,4 @@
 /tmp
 /node_modules
 *.pyc
-*.key
+scr/config*

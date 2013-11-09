@@ -2,7 +2,7 @@
 
 ## What
 
-This project aims to collect, typologize, and visualize data pertaining to the urban 
+This project aims to collect, typologize, and visualize data pertaining to urban bus systems across the world.
 
 ## Why
 

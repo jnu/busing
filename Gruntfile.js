@@ -1,15 +1,23 @@
 module.exports = function(grunt) {
 
-  // Project config
+  // Project tools config
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+
+    // Watch - build dev on changes
+    
+    watch: {
+      files: ['*.html', 'style/*.less', 'js/**.js'],
+      tasks: ['dev']
+    },
 
 
     // JS Minification
 
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
         preserveComments: 'some'
       },
       build: {
@@ -64,6 +72,10 @@ module.exports = function(grunt) {
       main: {
         src: 'index.html',
         dest: 'build/index.html'
+      },
+      dev: {
+        src: 'js/**',
+        dest: 'dev/'
       }
     },
 
@@ -113,10 +125,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
 
   // Tasks
-  grunt.registerTask('dev', ['clean:dev', 'env:dev', 'preprocess:dev', 'less:dev', 'jshint']);
+  grunt.registerTask('dev', ['clean:dev', 'env:dev', 'preprocess:dev', 'less:dev', 'jshint', 'copy:dev']);
   grunt.registerTask('build', ['clean:prod', 'env:build', 'preprocess:prod', 'less:prod', 'jshint', 'concat', 'uglify']);
 
 };

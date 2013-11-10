@@ -1,0 +1,26 @@
+{
+  "name" : "busing.csv",
+  "gd_key" : "0AsnHpWihusbxdHY1NmpnZ2Q0bllNX3pXY2dFMVRFYWc",
+  "col_map" : {
+    "City" : "city",
+    "State" : "state",
+    "Country" : "country",
+    "Org Name" : "org",
+    "City Population" : "population",
+    "Fare Collection Method -- Type Code" : "fare_method",
+    "Bus Fleet Size (Peak)" : "fleet_size",
+    "Avg Daily Passengers" : "load",
+    "Theoretical System Capacity" : "capacity",
+    "Date of Bus System Founding" : "founded",
+    "Additional Transit Systems? (Rail, Tram, etc.)" : "has_other_transit",
+    "Geocode" : "geo"
+  },
+  "geo" : {
+    "location" : [
+      "City",
+      "State",
+      "Country"
+    ],
+    "target" : "Geocode"
+  }
+}

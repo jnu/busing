@@ -18,19 +18,18 @@ import argparse
 import gdata.spreadsheet.service
 import gdata.docs.service
 
-
-# Globals
-keys = {
-    'spreadsheet': "0AsnHpWihusbxdHY1NmpnZ2Q0bllNX3pXY2dFMVRFYWc"
-}
-
-
 # Helpers
 def setup_access_cli(parser):
     parser.add_argument('-u', '--user', type=str,
         help="Google User Name")
     parser.add_argument('-p', '--password', type=str,
         help="Google Password")
+
+def parse_schema(fn):
+    schema = None
+    with open(fn, 'r') as fh:
+        schema = json.loads(fh.read())
+    return schema
 
 
 # Classes
@@ -81,7 +80,3 @@ if __name__=='__main__':
     args = parser.parse_args()
 
     client = GoogleIntegration(args.user, args.password, 'spreadsheet').connect()
-
-    # Test connection
-    cells = client.GetCellsFeed(keys['spreadsheet'])
-    

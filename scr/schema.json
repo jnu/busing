@@ -13,7 +13,8 @@
     "Theoretical System Capacity" : "capacity",
     "Date of Bus System Founding" : "founded",
     "Additional Transit Systems? (Rail, Tram, etc.)" : "has_other_transit",
-    "Geocode" : "geo"
+    "Geocode - Lat" : "lat",
+    "Geocode - Long" : "long"
   },
   "geo" : {
     "location" : [

@@ -12,20 +12,36 @@ client = GoogleIntegration(user, password, service=<service>).connect()
 from sys import stderr, argv
 from getpass import getpass
 import os
+import re
 import json
 import argparse
+import urllib
+import urllib2
 # 3rd party
 import gdata.spreadsheet.service
 import gdata.docs.service
 
+
 # Helpers
 def setup_access_cli(parser):
+    '''
+    Add username and password command line options
+    '''
     parser.add_argument('-u', '--user', type=str,
         help="Google User Name")
     parser.add_argument('-p', '--password', type=str,
         help="Google Password")
 
+def clean_cell(text):
+    '''
+    Strip text in the way Google does in the Data API for column headers
+    '''
+    return re.sub(r'[^\w\d\-_\.]', '', text).lower()
+
 def parse_schema(fn):
+    '''
+    Parse a JSON schema given by file named `fn`
+    '''
     schema = None
     with open(fn, 'r') as fh:
         schema = json.loads(fh.read())
@@ -34,17 +50,24 @@ def parse_schema(fn):
 
 # Classes
 class GoogleIntegration(object):
-    services = {
+    '''
+    Implement access to Google Spreadsheets, Data, and Maps APIs
+    As far as necessary for the related scripts
+    '''
+
+    SERVICES = {
         'docs' : gdata.docs.service.DocsService,
         'spreadsheet' : gdata.spreadsheet.service.SpreadsheetsService
     }
+
+    GEOCODE_URL = "http://maps.googleapis.com/maps/api/geocode/%s?sensor=false&address=%s"
 
     def __init__(self, username=None, password=None, service='docs'):
         self.username = username
         self.password = password
         self._ensure_auth_info()
 
-        self.service = self.services[service]
+        self.service = self.SERVICES[service]
         self.client = self.service()
 
     def _ensure_auth_info(self):
@@ -67,9 +90,26 @@ class GoogleIntegration(object):
             self.username += '@gmail.com'
 
     def connect(self):
+        '''
+        Login to Google Data API
+        '''
         self.client.ClientLogin(self.username, self.password,
             source="Urban Busing Project")
         return self.client
+
+    @classmethod
+    def geocode(cls, location, output='json'):
+        '''
+        Access Google Maps API for information about `location`
+        '''
+        clean_loc = urllib.quote(location)
+        url = cls.GEOCODE_URL % (output, clean_loc)
+
+        uh = urllib2.urlopen(url)
+
+        resp = uh.read()
+
+        return resp
 
 
 # Test

@@ -6,35 +6,27 @@ $ python compile_data.py [-u <user> [-p <password>]]
 import argparse
 import os
 import csv
+import re
 # local
 from access import *
 
 
 # Globals
 DATA_PATH = "../data/"
-
+t = None
 
 # Functions
 def get_csv_headers(schema):
     col_map = schema['col_map']
-    return col_map.vals()
+    return col_map.values()
 
 def get_spreadsheet_headers(schema):
     col_map = schema['col_map']
     return col_map.keys()
 
-def build_header_map(schema, remote_row):
+def clean_headers(schema):
     headers = get_spreadsheet_headers(schema)
-    pull_cols = []
-
-    # build map of column indexes to pull
-    for i, t_head in enumerate(remote_row)
-        if t_head.content.text in headers:
-            pull_cols.append(i)
-
-    assert len(pull_cols) is len(headers)
-
-    return pull_cols
+    return [re.sub(r'[^\w\d\-_\.]', '', h).lower() for h in headers]
 
 def create_csv_from_schema(schema, client):
     key = schema['gd_key']
@@ -42,20 +34,14 @@ def create_csv_from_schema(schema, client):
     lines = [get_csv_headers(schema)]
 
     rows = client.GetListFeed(key).entry
-    pull_cols = []
+    headers = clean_headers(schema)
 
     for i, row in enumerate(rows):
-        if i == 0:
-            # interpret headers
-            pull_cols = build_header_map(schema, row)
-            continue
-
         line = []
 
         # pull line data, using pull_cols as guide
-        for j, cell in row:
-            if j in pull_cols:
-                line.append(cell.content.text)
+        for header in headers:
+            line.append(row.custom[header].text)
 
         lines.append(line)
 
@@ -68,12 +54,16 @@ if __name__=='__main__':
     setup_access_cli(parser)
     args = parser.parse_args()
 
-    client = GoogleIntegration(args.user, args.password).connect()
+    client = GoogleIntegration(args.user, args.password, 'spreadsheet').connect()
 
     schema = parse_schema('schema.json')
 
     csv_lines = create_csv_from_schema(schema, client)
 
-    with open('%s/%s' % (DATA_PATH, schema['name']), 'w') as fh:
+    if not os.path.exists(DATA_PATH):
+        os.makedirs(DATA_PATH)
+        
+    path = ('%s/%s' % (DATA_PATH, schema['name'])).replace('//', '/')
+    with open(path, 'w') as fh:
         writer = csv.writer(fh)
         writer.writerows(csv_lines)

@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     // Watch - build dev on changes
     
     watch: {
-      files: ['*.html', 'style/*.less', 'js/**.js'],
+      files: ['*.html', 'style/*.less', 'js/**.js', 'data/*.json', 'data/*.csv'],
       tasks: ['dev']
     },
 
@@ -70,11 +70,11 @@ module.exports = function(grunt) {
     
     copy: {
       main: {
-        src: 'index.html',
-        dest: 'build/index.html'
+        src: ['index.html', 'data/**'],
+        dest: 'build/',
       },
       dev: {
-        src: 'js/**',
+        src: ['js/**', 'data/**'],
         dest: 'dev/'
       }
     },

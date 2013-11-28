@@ -5,23 +5,46 @@
   </head>
 
   <!-- @if NODE_ENV == 'DEVELOPMENT' -->
-  <link rel="stylesheet" src="build/busing.css">
+  <link rel="stylesheet" href="busing.css">
   <script src="js/lib/jquery-2.0.3.min.js"></script>
   <script src="js/lib/d3.v3.min.js"></script>
   <script src="js/lib/crossfilter.min.js"></script>
   <script src="js/lib/dc.min.js"></script>
+  <script src="js/lib/underscore-1.5.2.js"></script>
   <script src="js/busvis.js"></script>
   <!-- @endif -->
 
   <!-- @if NODE_ENV == 'PRODUCTION' -->
-  <link rel="stylesheet" src="busing.css">
+  <link rel="stylesheet" href="busing.css">
   <script src="busing.min.js"></script>
   <!-- @endif -->
 
   <body>
+    <header>
+      <h1>Busing</h1>
+    </header>
 
-    <div id="vis-country"></div>
-    <div id="vis-year"></div>
+    <article class='container'>
+
+      <section class='row'>
+        <p>
+          Placeholder stuff
+          <div id="vis-country"></div>
+        </p>
+      </section>
+
+      <section class='row'>
+        <p>
+          <div id="vis-year"></div>
+        </p>
+      </section>
+
+      <section class='row'>
+        <p>
+          <div id="vis-map"></div>
+        </p>
+      </section>
+    </article>
 
   </body>
 </html>

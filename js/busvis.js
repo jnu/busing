@@ -5,6 +5,12 @@
 
 
 // helpers
+
+// recursive dot:
+// access value in nested object by consecutive key name, e.g.
+// > var obj = {a: {b: {c: 'd'}}}
+// > dot('a', 'b', 'c')(obj)
+// will return 'd'.
 function dot() {
     var args = arguments;
     return function(d) {
